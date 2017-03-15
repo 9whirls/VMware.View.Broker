@@ -6,11 +6,15 @@ VMware PowerCLI provides module VMware.VimAutomation.HorizonView to connect with
 # Function List
 Connect-ViewBroker: connect to View Connection Server. Once the connection is established, the connection server is saved as $global:defaultBroker. All further actions will be taken against this broker.
 
-Get-ViewLicense: retrieve license information 
+Get-ViewLicense: retrieve license information
+
+Get-ViewVC: retrieve all virtual centers
 
 Add-ViewVC: add a virtual center
 
-Remove-ViewVC: remove virtual center(s)
+Remove-ViewVC: remove one or more virtual centers
+
+Get-ViewFarm: retrieve all farms
 
 # Install
 1. create a folder named VMware.View.Broker under Powershell module folder

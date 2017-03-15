@@ -116,6 +116,15 @@ class broker {
       $this.server.extensiondata.virtualcenter.virtualcenter_delete($vc.id)
     }
   }
+  
+  [VMware.Hv.FarmInfo[]] get_farm () {
+    $qd = New-Object VMware.Hv.QueryDefinition -property @{
+      queryEntityType = 'FarmSummaryView'
+    }
+    $results = $this.server.extensiondata.queryservice.queryservice_create($qd).results
+    $farms = foreach ($r in $results) {$this.server.extensiondata.farm.farm_get($r.id)}
+    return $farms
+  }
 }
 
 function Connect-ViewBroker {
@@ -135,6 +144,10 @@ function Get-ViewLicense {
 
 function Get-ViewVC {
   $defaultBroker.get_vcenter()
+}
+
+function Get-ViewFarm {
+  $defaultBroker.get_farm()
 }
 
 function Add-ViewVC {
