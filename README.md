@@ -20,6 +20,12 @@ Get-ViewFarm: retrieve all farms
 
 Get-ViewRDSServer: retrieve all RDS servers
 
+Get-ViewDesktop: retrieve all desktop pools
+
+Get-ViewApplication: retrieve all application pools
+
+Get-ViewMachine: retrieve all non-rds machines
+
 # Install
 1. create a folder named VMware.View.Broker under Powershell module folder
 2. copy VMware.View.Broker.psm1 and VMware.View.Broker.psd1 into the new folder

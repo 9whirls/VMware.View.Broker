@@ -138,6 +138,33 @@ class broker {
     $servers = foreach ($r in $results) {$this.server.extensiondata.rdsserver.rdsserver_get($r.id)}
     return $servers
   }
+  
+  [VMware.Hv.DesktopInfo[]] get_desktop () {
+    $qd = New-Object VMware.Hv.QueryDefinition -property @{
+      queryEntityType = 'DesktopSummaryView'
+    }
+    $results = $this.server.extensiondata.queryservice.queryservice_create($qd).results
+    $desktops = foreach ($r in $results) {$this.server.extensiondata.desktop.desktop_get($r.id)}
+    return $desktops
+  }
+  
+  [VMware.Hv.ApplicationInfo[]] get_application () {
+    $qd = New-Object VMware.Hv.QueryDefinition -property @{
+      queryEntityType = 'ApplicationInfo'
+    }
+    $results = $this.server.extensiondata.queryservice.queryservice_create($qd).results
+    $apps = foreach ($r in $results) {$this.server.extensiondata.application.application_get($r.id)}
+    return $apps
+  }
+  
+  [VMware.Hv.MachineInfo[]] get_machine () {
+    $qd = New-Object VMware.Hv.QueryDefinition -property @{
+      queryEntityType = 'MachineSummaryView'
+    }
+    $results = $this.server.extensiondata.queryservice.queryservice_create($qd).results
+    $machines = foreach ($r in $results) {$this.server.extensiondata.machine.machine_get($r.id)}
+    return $machines
+  }
 }
 
 function Connect-ViewBroker {
@@ -172,6 +199,18 @@ function Get-ViewFarm {
 
 function Get-ViewRDSServer {
   $defaultBroker.get_rdsserver()
+}
+
+function Get-ViewDesktop {
+  $defaultBroker.get_desktop()
+}
+
+function Get-ViewApplication {
+  $defaultBroker.get_application()
+}
+
+function Get-ViewMachine {
+  $defaultBroker.get_machine()
 }
 
 function Add-ViewVC {
