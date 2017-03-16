@@ -8,6 +8,8 @@ Connect-ViewBroker: connect to View Connection Server. Once the connection is es
 
 Get-ViewLicense: retrieve license information
 
+Set-ViewLicense: set license key
+
 Get-ViewVC: retrieve all virtual centers
 
 Add-ViewVC: add a virtual center
@@ -15,6 +17,8 @@ Add-ViewVC: add a virtual center
 Remove-ViewVC: remove one or more virtual centers
 
 Get-ViewFarm: retrieve all farms
+
+Get-ViewRDSServer: retrieve all RDS servers
 
 # Install
 1. create a folder named VMware.View.Broker under Powershell module folder
