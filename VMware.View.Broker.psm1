@@ -129,6 +129,15 @@ class broker {
     $farms = foreach ($r in $results) {$this.server.extensiondata.farm.farm_get($r.id)}
     return $farms
   }
+  
+  [VMware.Hv.RDSServerInfo[]] get_rdsserver () {
+    $qd = New-Object VMware.Hv.QueryDefinition -property @{
+      queryEntityType = 'RDSServerSummaryView'
+    }
+    $results = $this.server.extensiondata.queryservice.queryservice_create($qd).results
+    $servers = foreach ($r in $results) {$this.server.extensiondata.rdsserver.rdsserver_get($r.id)}
+    return $servers
+  }
 }
 
 function Connect-ViewBroker {
@@ -159,6 +168,10 @@ function Get-ViewVC {
 
 function Get-ViewFarm {
   $defaultBroker.get_farm()
+}
+
+function Get-ViewRDSServer {
+  $defaultBroker.get_rdsserver()
 }
 
 function Add-ViewVC {
