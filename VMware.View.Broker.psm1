@@ -44,6 +44,10 @@ class broker {
     return $this.server.extensiondata.license.license_get()
   }
   
+  [void] set_license ($key) {
+    $this.server.extensiondata.license.license_set($key)
+  }
+  
   [VMware.Hv.VirtualCenterInfo[]] get_vcenter () {
     return $this.server.extensiondata.virtualcenter.virtualcenter_list()
   }
@@ -140,6 +144,13 @@ function Connect-ViewBroker {
 
 function Get-ViewLicense {
   $defaultBroker.get_license()
+}
+
+function Set-ViewLicense {
+  param(
+    $licensekey
+  )
+  $defaultBroker.set_license($licensekey)
 }
 
 function Get-ViewVC {
