@@ -26,6 +26,10 @@ Get-ViewApplication: retrieve all application pools
 
 Get-ViewMachine: retrieve all non-rds machines
 
+Get-ViewSession: retrieve all sessions
+
+Logoff-ViewSession: forced logoff one or more sessions 
+
 # Install
 1. create a folder named VMware.View.Broker under Powershell module folder
 2. copy VMware.View.Broker.psm1 and VMware.View.Broker.psd1 into the new folder
