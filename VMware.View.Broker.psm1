@@ -165,6 +165,19 @@ class broker {
     $machines = foreach ($r in $results) {$this.server.extensiondata.machine.machine_get($r.id)}
     return $machines
   }
+  
+  [VMware.Hv.SessionLocalSummaryView[]] get_session () {
+    $qd = New-Object VMware.Hv.QueryDefinition -property @{
+      queryEntityType = 'SessionLocalSummaryView'
+    }
+    $results = $this.server.extensiondata.queryservice.queryservice_create($qd).results
+    $sessions = foreach ($r in $results) {$this.server.extensiondata.session.session_getlocalsummaryview($r.id)}
+    return $sessions
+  }
+  
+  logoff_session ($ids) {
+    $this.server.extensiondata.session.session_logoffsessionsforced($ids)
+  }
 }
 
 function Connect-ViewBroker {
@@ -211,6 +224,17 @@ function Get-ViewApplication {
 
 function Get-ViewMachine {
   $defaultBroker.get_machine()
+}
+
+function Get-ViewSession {
+  $defaultBroker.get_session()
+}
+
+function Logoff-ViewSession {
+  param(
+    $sessions
+  )
+  $defaultBroker.logoff_session($sessions.id)
 }
 
 function Add-ViewVC {
