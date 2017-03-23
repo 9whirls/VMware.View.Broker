@@ -232,6 +232,7 @@ function Get-ViewSession {
 
 function Logoff-ViewSession {
   param(
+    [Parameter(Mandatory = $true, ValueFromPipeline=$true)]
     $sessions
   )
   $defaultBroker.logoff_session($sessions.id)
