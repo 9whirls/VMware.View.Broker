@@ -28,7 +28,9 @@ Get-ViewMachine: retrieve all non-rds machines
 
 Get-ViewSession: retrieve all sessions
 
-Logoff-ViewSession: forced logoff one or more sessions 
+Logoff-ViewSession: forced logoff one or more sessions
+
+Get-ViewVCVM: retrieve vCenter managed virtual machines
 
 # Install
 1. create a folder named VMware.View.Broker under Powershell module folder

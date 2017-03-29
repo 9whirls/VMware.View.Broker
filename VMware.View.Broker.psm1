@@ -166,6 +166,11 @@ class broker {
     return $machines
   }
   
+  [VMware.Hv.VirtualMachineInfo[]] get_vm ($vcid) {
+    $vms = $this.server.extensiondata.virtualmachine.virtualmachine_list($vcid)
+    return $vms
+  }
+  
   [VMware.Hv.SessionLocalSummaryView[]] get_session () {
     $qd = New-Object VMware.Hv.QueryDefinition -property @{
       queryEntityType = 'SessionLocalSummaryView'
@@ -224,6 +229,14 @@ function Get-ViewApplication {
 
 function Get-ViewMachine {
   $defaultBroker.get_machine()
+}
+
+function Get-ViewVCVM {
+  param(
+    [Parameter(Mandatory = $true, ValueFromPipeline=$true)]
+    $vc
+  )
+  $defaultBroker.get_vm($vc.id)
 }
 
 function Get-ViewSession {
