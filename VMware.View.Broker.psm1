@@ -181,16 +181,36 @@ class broker {
   }
   
   logoff_session ($ids) {
+    $this.server.extensiondata.session.session_logoffsessions($ids)
+  }
+  
+  logoff_forced_session ($ids) {
     $this.server.extensiondata.session.session_logoffsessionsforced($ids)
+  }
+  
+  disconnect_session ($ids) {
+    $this.server.extensiondata.session.session_disconnectsessions($ids)
+  }
+  
+  reset_session ($ids) {
+    $this.server.extensiondata.session.session_resetsessions($ids)
   }
 }
 
 function Connect-ViewBroker {
   param(
-    $name,
-    $user,
-    $password,
-    $domain
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $name,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $user,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $password,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $domain
   )
   
   $Global:defaultBroker = [broker]::new($name, $user, $password, $domain)
@@ -243,28 +263,53 @@ function Get-ViewSession {
   $defaultBroker.get_session()
 }
 
-function Logoff-ViewSession {
+function Set-ViewSession {
   param(
     [Parameter(Mandatory = $true, ValueFromPipeline=$true)]
-    $sessions
+      $sessions,
+    [Parameter(Mandatory = $true)]
+    [ValidateSet(
+      "DISCONNECT",
+      "LOGOFF",
+      "LOGOFF_FORCED",
+      "RESET"
+    )]
+      $action
   )
-  $defaultBroker.logoff_session($sessions.id)
+  switch ($action) {
+    "LOGOFF" { $defaultBroker.logoff_session($sessions.id) }
+    "DISCONNECT" { $defaultBroker.disconnect_session($sessions.id) }
+    "LOGOFF_FORCED" { $defaultBroker.logoff_forced_session($sessions.id) }
+    "RESET" { $defaultBroker.reset_session($sessions.id) }
+  }
 }
 
 function Add-ViewVC {
   param(
-    $name,
-    $user,
-    $password,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $name,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $user,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $password,
     [ValidateSet(
       "DISABLED",
       "LOCAL_TO_VC",
       "STANDALONE"
     )]
       $composertype,
-    $composername,
-    $composeruser,
-    $composerpassword
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $composername,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $composeruser,
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $composerpassword
   )
   
   $defaultBroker.add_vcenter($name, $user, $password, $composertype, $composername, $composeruser, $composerpassword)
@@ -272,7 +317,9 @@ function Add-ViewVC {
 
 function Remove-ViewVC {
   param(
-    $name
+    [Parameter(Mandatory = $true)]
+    [string] 
+      $name
   )
   
   $defaultBroker.remove_vcenter($name)

@@ -28,7 +28,7 @@ Get-ViewMachine: retrieve all non-rds machines
 
 Get-ViewSession: retrieve all sessions
 
-Logoff-ViewSession: forced logoff one or more sessions
+Set-ViewSession: disconnect / logoff / forced logoff / reset one or more sessions
 
 Get-ViewVCVM: retrieve vCenter managed virtual machines
 
