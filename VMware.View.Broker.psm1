@@ -195,6 +195,59 @@ class broker {
   reset_session ($ids) {
     $this.server.extensiondata.session.session_resetsessions($ids)
   }
+  
+  [VMware.Hv.DesktopId] new_manualpool ($name, $vcid, $vmids) {
+    $manual_spec = new-object VMware.Hv.DesktopManualDesktopSpec -property @{
+      source = "VIRTUAL_CENTER"
+      machines = $vmids
+      virtualCenter = $vcid
+      userAssignment = @{
+        userAssignment = "FLOATING"
+      }
+      # viewStorageAcceleratorSettings
+      virtualCenterManagedCommonSettings = @{
+        transparentPageSharingScope = "VM"
+      }
+    }
+    $desktop_spec = new-object VMware.Hv.DesktopSpec -property @{
+      base = @{
+        name = $name
+        # displayName = $displayName
+        # description = $description
+        accessGroup = $ag.id
+      }
+      type = "MANUAL"
+      desktopSettings = @{
+        enabled = $true
+        flashSettings = @{
+          quality = "NO_CONTROL"
+          throttling = "DISABLED"
+        }
+        logoffSettings = @{
+          powerpolicy = "TAKE_NO_POWER_ACTION"
+          automaticLogoffPolicy = "NEVER"
+          deleteOrRefreshMachineAfterLogoff = "NEVER"
+          refreshOsDiskAfterLogoff = "NEVER"
+        }
+        displayProtocolSettings = @{
+          supportedDisplayProtocols = @("PCOIP", "RDP", "BLAST")
+          defaultDisplayProtocol = "PCOIP"
+          allowUsersToChooseProtocol = $true
+          enableHTMLAccess = $false
+          pcoipDisplaySettings = @{
+            renderer3D = "MANAGE_BY_VSPHERE_CLIENT"
+            enableGRIDvGPUs = $false
+          }
+        }
+        mirageConfigurationOverrides = @{
+          overrideGlobalSetting = $false
+          enabled = $false
+        }
+      }
+      manualDesktopSpec = $manual_spec
+    }
+    return $this.server.extensiondata.desktop.desktop_create($desktop_spec)
+  }
 }
 
 function Connect-ViewBroker {
